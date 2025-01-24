@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartArrowDown,
@@ -17,7 +18,7 @@ const Header = () => {
   const menuItems = [
     { title: "Trang chủ", path: "/" },
     { title: "Nạp tiền", path: "/deposit" },
-    { title: "Danh sách phần mềm", path: "/software" },
+    { title: "Danh sách phần mềm", path: "/tool-filter" },
     { title: "Cấp bật tài khoản", path: "/account-level" },
     { title: "Lịch sử đơn hàng", path: "/orders" },
     { title: "Liên hệ", path: "/contact" },
@@ -86,10 +87,10 @@ const Header = () => {
             0đ
             <FontAwesomeIcon icon={faWallet} className="wallet-icon" />
           </div>
-          <div className="header-profile">
-            <span className="profile-text">Profile</span>
-            <img src="/src/assets/imgs/man.png" alt="avatar" />
-          </div>
+          <Link to="/account" className="header-profile">
+            <div className="profile-text">tonii</div>
+            <img src="/src/assets/imgs/man.png" alt="Profile" />
+          </Link>
         </div>
       </div>
 
