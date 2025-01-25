@@ -4,6 +4,75 @@ import { faMagnifyingGlass, faCopy } from "@fortawesome/free-solid-svg-icons";
 
 const HistoryOrder = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const orders = [
+    {
+      id: 1,
+      toolName: "VPS Proxy Builder",
+      licenseKey: "XXXX-XXXX-XXXX",
+      duration: "30 ngày",
+      payment: "200,000đ",
+      pcName: "DESKTOP-ABC123",
+      status: "Đang hoạt động",
+    },
+    {
+      id: 1,
+      toolName: "VPS Proxy Builder",
+      licenseKey: "XXXX-XXXX-XXXX",
+      duration: "30 ngày",
+      payment: "200,000đ",
+      pcName: "DESKTOP-ABC123",
+      status: "Đang hoạt động",
+    },
+    {
+      id: 1,
+      toolName: "VPS Proxy Builder",
+      licenseKey: "XXXX-XXXX-XXXX",
+      duration: "30 ngày",
+      payment: "200,000đ",
+      pcName: "DESKTOP-ABC123",
+      status: "Đang hoạt động",
+    },
+    {
+      id: 1,
+      toolName: "VPS Proxy Builder",
+      licenseKey: "XXXX-XXXX-XXXX",
+      duration: "30 ngày",
+      payment: "200,000đ",
+      pcName: "DESKTOP-ABC123",
+      status: "Đang hoạt động",
+    },
+    {
+      id: 1,
+      toolName: "VPS Proxy Builder",
+      licenseKey: "XXXX-XXXX-XXXX",
+      duration: "30 ngày",
+      payment: "200,000đ",
+      pcName: "DESKTOP-ABC123",
+      status: "Đang hoạt động",
+    },
+    // Thêm các orders khác...
+  ];
+
+  // Tính toán số trang
+  const totalPages = Math.ceil(orders.length / itemsPerPage);
+
+  // Lấy orders cho trang hiện tại
+  const getCurrentPageOrders = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return orders.slice(startIndex, endIndex);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText("hptools");
@@ -74,18 +143,48 @@ const HistoryOrder = () => {
           <div className="header-cell">Tên PC</div>
           <div className="header-cell">Hành động</div>
         </div>
-        <div className="empty-history">
-          <img src="/src/assets/imgs/logo.png" alt="Empty" />
-          <p>Danh sách trống</p>
-        </div>
+        {orders.length > 0 ? (
+          getCurrentPageOrders().map((order, index) => (
+            <div className="table-row" key={order.id}>
+              <div className="table-cell" data-label="STT">
+                {(currentPage - 1) * itemsPerPage + index + 1}
+              </div>
+              <div className="table-cell" data-label="Tên tool">
+                {order.toolName}
+              </div>
+              <div className="table-cell" data-label="LICENSEKEY">
+                {order.licenseKey}
+              </div>
+              <div className="table-cell" data-label="Thời hạn">
+                {order.duration}
+              </div>
+              <div className="table-cell" data-label="Thanh toán">
+                {order.payment}
+              </div>
+              <div className="table-cell" data-label="Tên PC">
+                {order.pcName}
+              </div>
+              <div className="table-cell" data-label="Hành động">
+                <button className="action-btn">Xóa thiết bị</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="empty-history">
+            <img src="/src/assets/imgs/logo.png" alt="Empty" />
+            <p>Danh sách trống</p>
+          </div>
+        )}
       </div>
 
       <div className="pagination">
-        <button className="page-btn prev" disabled>
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
           &lt;
         </button>
-        <button className="page-btn active">1</button>
-        <button className="page-btn next" disabled>
+        <div className="page-number">
+          <span>{currentPage}</span> / <span>{totalPages}</span>
+        </div>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
           &gt;
         </button>
       </div>

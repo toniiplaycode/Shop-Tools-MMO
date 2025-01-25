@@ -6,8 +6,9 @@ import {
   faMagnifyingGlass,
   faWallet,
   faBars,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { Select, Drawer } from "antd";
+import { Select, Drawer, Badge } from "antd";
 import "antd/dist/reset.css";
 
 const { Option } = Select;
@@ -17,13 +18,27 @@ const Header = () => {
 
   const menuItems = [
     { title: "Trang chủ", path: "/" },
-    { title: "Nạp tiền", path: "/deposit" },
+    { title: "Nạp tiền", path: "/account/wallet" },
     { title: "Danh sách phần mềm", path: "/tool-filter" },
-    { title: "Cấp bật tài khoản", path: "/account-level" },
-    { title: "Lịch sử đơn hàng", path: "/orders" },
-    { title: "Liên hệ", path: "/contact" },
-    { title: "Blog", path: "/blog" },
-    { title: "Chúng tôi", path: "/about" },
+    { title: "Cấp bật tài khoản", path: "/account/account-level" },
+    { title: "Lịch sử đơn hàng", path: "/account/orders" },
+    { title: "Liên hệ", path: "/account/contact" },
+    { title: "Blog", path: "/blogs" },
+  ];
+
+  const cartItems = [
+    {
+      id: 1,
+      name: "Mask My PC - Change Info PC",
+      image: "/src/assets/imgs/window10pro.png",
+      price: "100.000 đ",
+    },
+    {
+      id: 2,
+      name: "VPS Proxy Builder",
+      image: "/src/assets/imgs/window10pro.png",
+      price: "200.000 đ",
+    },
   ];
 
   return (
@@ -33,9 +48,9 @@ const Header = () => {
           <button className="menu-toggle" onClick={() => setIsDrawerOpen(true)}>
             <FontAwesomeIcon icon={faBars} />
           </button>
-          <div className="header-cart mobile-only">
+          <Link to="/cart" className="header-cart mobile-only">
             <FontAwesomeIcon icon={faCartArrowDown} className="cart-icon" />
-          </div>
+          </Link>
         </div>
 
         <div className="header-logo">
@@ -53,7 +68,40 @@ const Header = () => {
 
         <div className="header-actions">
           <div className="header-cart desktop-only">
-            <FontAwesomeIcon icon={faCartArrowDown} className="cart-icon" />
+            <Badge count={cartItems.length} size="small">
+              <FontAwesomeIcon icon={faCartArrowDown} className="cart-icon" />
+            </Badge>
+
+            <div className="cart-preview">
+              <div className="cart-items">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="cart-item">
+                    <img src={item.image} alt={item.name} />
+                    <div className="item-info">
+                      <div className="item-name">{item.name}</div>
+                      <div className="item-price">{item.price}</div>
+                    </div>
+                    <button className="remove-btn">
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="cart-total">
+                <span>Tổng tiền:</span>
+                <span className="total-amount">300.000 đ</span>
+              </div>
+
+              <div className="cart-actions">
+                <Link to="/cart" className="view-cart">
+                  Giỏ hàng
+                </Link>
+                <Link to="/payment" className="checkout">
+                  Thanh toán
+                </Link>
+              </div>
+            </div>
           </div>
           <div className="header-language">
             <Select defaultValue="1" style={{ width: 145 }}>

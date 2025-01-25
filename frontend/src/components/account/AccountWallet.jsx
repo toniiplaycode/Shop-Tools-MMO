@@ -10,6 +10,8 @@ import {
 
 const AccountWallet = () => {
   const [amount, setAmount] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const stats = [
     {
@@ -41,6 +43,106 @@ const AccountWallet = () => {
       color: "#3B82F6",
     },
   ];
+
+  const transactions = [
+    {
+      id: 1,
+      amount: "100,000đ",
+      note: "Nạp tiền từ Ngân hàng",
+      time: "10:00 AM",
+    },
+    {
+      id: 2,
+      amount: "50,000đ",
+      note: "Nạp tiền từ MOMO",
+      time: "11:00 AM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+    {
+      id: 3,
+      amount: "75,000đ",
+      note: "Nạp tiền từ ACB",
+      time: "12:00 PM",
+    },
+  ];
+
+  // Tính toán số trang
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+
+  // Lấy transactions cho trang hiện tại
+  const getCurrentPageTransactions = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return transactions.slice(startIndex, endIndex);
+  };
+
+  // Handlers cho nút prev/next
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
 
   return (
     <div className="account-wallet">
@@ -170,10 +272,44 @@ const AccountWallet = () => {
               <div className="header-cell">Ghi chú</div>
               <div className="header-cell">Thời gian</div>
             </div>
-            <div className="empty-history">
-              <img src="/src/assets/imgs/logo.png" alt="Empty" />
-              <p>Danh sách trống</p>
+            {transactions.length > 0 ? (
+              getCurrentPageTransactions().map((transaction, index) => (
+                <div className="table-row" key={transaction.id}>
+                  <div className="table-cell" data-label="STT">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </div>
+                  <div className="table-cell" data-label="Số lượng">
+                    {transaction.amount}
+                  </div>
+                  <div className="table-cell" data-label="Ghi chú">
+                    {transaction.note}
+                  </div>
+                  <div className="table-cell" data-label="Thời gian">
+                    {transaction.time}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="empty-history">
+                <img src="/src/assets/imgs/logo.png" alt="Empty" />
+                <p>Danh sách trống</p>
+              </div>
+            )}
+          </div>
+
+          <div className="pagination">
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              &lt;
+            </button>
+            <div className="page-number">
+              <span>{currentPage}</span> / <span>{totalPages}</span>
             </div>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
+              &gt;
+            </button>
           </div>
         </div>
       </div>
